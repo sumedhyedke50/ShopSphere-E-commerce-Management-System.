@@ -1,0 +1,35 @@
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout - ShopSphere</title>
+    <link rel="stylesheet" th:href="@{/css/logout.css}">
+</head>
+
+<body>
+
+    <div class="logout-container">
+
+        <div class="logout-icon">👋</div>
+
+        <h2>You Have Logged Out!</h2>
+
+        <p>
+            Thank you for visiting ShopSphere.
+            Your session has ended successfully.
+            We hope to see you again soon!
+        </p>
+
+        <a th:href="@{/home}" class="btn home-btn">Go to Home</a>
+
+        <a th:href="@{/login}" class="btn login-btn">Login Again</a>
+
+        <div class="brand">ShopSphere</div>
+
+    </div>
+
+</body>
+</html>
+```
