@@ -11,11 +11,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	@GetMapping("/register")
-	public String openRegisterPage()
-	{
-		return "register";
-	}
 	
 	@GetMapping("/logout-success")
 	public String logoutSuccess() {
