@@ -35,7 +35,7 @@ public class RegistrationController {
 				return "register";
 			}
 
-			return "home";
+			return "login";
 
 		} catch (IllegalArgumentException e) {
 			model.addAttribute("error", e.getMessage());

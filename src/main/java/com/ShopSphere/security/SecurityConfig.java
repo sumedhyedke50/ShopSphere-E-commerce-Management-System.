@@ -1,5 +1,6 @@
 package com.ShopSphere.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,8 +11,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.ShopSphere.config.RoleBasedLoginSuccessHandler;
+
 @Configuration
 public class SecurityConfig {
+	
+	@Autowired
+	private final RoleBasedLoginSuccessHandler successHandler;
+
+	public SecurityConfig(RoleBasedLoginSuccessHandler successHandler) {
+	    this.successHandler = successHandler;
+	}
+	
 
     @Bean
     public SecurityFilterChain securityFilterChain(
@@ -28,18 +39,18 @@ public class SecurityConfig {
                     "/css/**", "/images/**", "/js/**"
                 ).permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/customer/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .requestMatchers("/customer/**").hasAnyRole("CUSTOMER")
                 .anyRequest().authenticated()
             )
 
             .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/", true)
-                .permitAll()
-            )
+            	    .loginPage("/login")
+            	    .loginProcessingUrl("/login-validation")
+            	    .usernameParameter("email")
+            	    .passwordParameter("password")
+            	    .successHandler(successHandler)
+            	    .permitAll()
+            	)
 
             .logout(logout -> logout
                 .logoutUrl("/logout")

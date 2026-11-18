@@ -1,4 +1,3 @@
-
 package com.ShopSphere.service;
 
 import java.util.ArrayList;
@@ -17,38 +16,27 @@ import com.ShopSphere.repository.UserRepository;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	public CustomUserDetailsService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
-    @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email);
+		User user = userRepository.findByEmailWithRoles(email);
 
-        if (user == null) {
-            throw new UsernameNotFoundException(
-                "User not found with email: " + email
-            );
-        }
+		if (user == null) {
+			throw new UsernameNotFoundException("User not found: " + email);
+		}
 
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        for (Role role : user.getRoles()) {
-            authorities.add(
-                new SimpleGrantedAuthority(
-                    "ROLE_" + role.getRoleName()
-                )
-            );
-        }
+		for (Role role : user.getRoles()) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+		}
 
-        return new org.springframework.security.core.userdetails.User(
-            user.getEmail(),
-            user.getPassword(),
-            authorities
-        );
-    }
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+	}
 }

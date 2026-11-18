@@ -16,13 +16,5 @@ public class Logincontroller {
 		return "login";
 	}
 	
-	@PostMapping("/login-validation")
-	public String validateUser(@ModelAttribute LoginDto login)
-	{
-		System.err.println(login.getEmail());
-		System.err.println(login.getPassword());
-		
-		return "home";
-	}
 
 }
